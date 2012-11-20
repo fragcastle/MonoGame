@@ -1844,8 +1844,8 @@ namespace Microsoft.Xna.Framework.Graphics
             Debug.Assert(_vertexBuffer != null, "The vertex buffer is null!");
             Debug.Assert(_indexBuffer != null, "The index buffer is null!");
 
-			if (minVertexIndex > 0)
-				throw new NotImplementedException ("minVertexIndex > 0 is supported");
+			//if (minVertexIndex > 0)
+			//	throw new NotImplementedException ("minVertexIndex > 0 is supported");            
 
 #if DIRECTX
 

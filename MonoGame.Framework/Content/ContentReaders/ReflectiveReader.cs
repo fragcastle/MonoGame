@@ -244,8 +244,12 @@ namespace Microsoft.Xna.Framework.Content
                 obj = (T)existingInstance;
             }
             else
-            {
+            {   
+#if WINRT
+                obj = (constructor == null ? (T)Activator.CreateInstance(typeof(T)) : (T)constructor.Invoke(null));
+#else              
                 obj = (constructor == null ? (T)Activator.CreateInstance(typeof(T), false) : (T)constructor.Invoke(null));
+#endif
             }
 			
 			if(baseTypeReader != null)
