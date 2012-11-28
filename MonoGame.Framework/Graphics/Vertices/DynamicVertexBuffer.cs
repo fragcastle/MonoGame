@@ -70,6 +70,9 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             base.SetData<T>(0, data, startIndex, elementCount, VertexDeclaration.VertexStride, options);
         }
+
+        public event EventHandler<EventArgs> ContentLost;
+
     }
 }
 

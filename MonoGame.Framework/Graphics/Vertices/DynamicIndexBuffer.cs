@@ -56,6 +56,11 @@ namespace Microsoft.Xna.Framework.Graphics
 		{
 		}
 
+        public DynamicIndexBuffer(GraphicsDevice graphicsDevice, Type type, int indexCount, BufferUsage bufferUsage) :
+            base(graphicsDevice, type, indexCount, bufferUsage)
+        {
+        }
+
         public void SetData<T>(int offsetInBytes, T[] data, int startIndex, int elementCount, SetDataOptions options) where T : struct
         {
             base.SetDataInternal<T>(offsetInBytes, data, startIndex, elementCount, options);
@@ -65,6 +70,8 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             base.SetDataInternal<T>(0, data, startIndex, elementCount, options);
         }
+
+        public event EventHandler<EventArgs> ContentLost;
     }
 }
 
