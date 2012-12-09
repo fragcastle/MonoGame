@@ -89,7 +89,8 @@ namespace Microsoft.Xna.Framework.Graphics
             desc.Usage = SharpDX.Direct3D11.ResourceUsage.Default;
             desc.BindFlags = SharpDX.Direct3D11.BindFlags.ConstantBuffer;
             desc.CpuAccessFlags = SharpDX.Direct3D11.CpuAccessFlags.None;
-            _cbuffer = new SharpDX.Direct3D11.Buffer(GraphicsDevice._d3dDevice, desc);
+            lock (GraphicsDevice._d3dContext)
+                _cbuffer = new SharpDX.Direct3D11.Buffer(GraphicsDevice._d3dDevice, desc);
 
 #elif OPENGL 
 
@@ -127,7 +128,10 @@ namespace Microsoft.Xna.Framework.Graphics
 
                 if (data is float)
                     bytes = BitConverter.GetBytes((float)data);
-                else
+                else if (data is int)
+					// Integer values are treated as floats after the shader is converted, so we convert them.
+					bytes = BitConverter.GetBytes((float)((int)data));
+				else
                     bytes = BitConverter.GetBytes(((float[])data)[0]);
 
                 Buffer.BlockCopy(bytes, 0, _buffer, offset, elementSize);
@@ -136,7 +140,6 @@ namespace Microsoft.Xna.Framework.Graphics
             // Take care of the single copy case!
             else if (rows == 1 || (rows == 4 && columns == 4))
                 Buffer.BlockCopy(data as Array, 0, _buffer, offset, rows * columns * elementSize);
-
             else
             {
                 var source = data as Array;
@@ -168,9 +171,9 @@ namespace Microsoft.Xna.Framework.Graphics
                 switch (param.ParameterType)
                 {
                     case EffectParameterType.Single:
-                        SetData(offset, param.RowCount, param.ColumnCount, param.Data);
+					case EffectParameterType.Int32:
+						SetData(offset, param.RowCount, param.ColumnCount, param.Data);
                         break;
-
                     default:
                         throw new NotImplementedException("Not supported!");
                 }
