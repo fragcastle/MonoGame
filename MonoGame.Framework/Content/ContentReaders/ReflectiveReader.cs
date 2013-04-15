@@ -9,7 +9,7 @@ This license governs use of the accompanying software. If you use the software, 
 accept the license, do not use the software.
 
 1. Definitions
-The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under
 U.S. copyright law.
 
 A "contribution" is the original software, or any additions or changes to the software.
@@ -17,19 +17,19 @@ A "contributor" is any person that distributes its contribution under this licen
 "Licensed patents" are a contributor's patent claims that read directly on its contribution.
 
 2. Grant of Rights
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
 
 3. Conditions and Limitations
 (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, 
+(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software,
 your patent license from such contributor to the software ends automatically.
-(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution
 notices that are present in the software.
-(D) If you distribute any portion of the software in source code form, you may do so only under this license by including 
-a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object 
+(D) If you distribute any portion of the software in source code form, you may do so only under this license by including
+a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object
 code form, you may only do so under a license that complies with this license.
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees
 or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent
@@ -51,7 +51,7 @@ namespace Microsoft.Xna.Framework.Content
         PropertyInfo[] properties;
         FieldInfo[] fields;
         ContentTypeReaderManager manager;
-		
+
 		Type targetType;
 		Type baseType;
 		ContentTypeReader baseTypeReader;
@@ -76,7 +76,7 @@ namespace Microsoft.Xna.Framework.Content
 				baseType = type;
 				baseTypeReader = manager.GetTypeReader(baseType);
 			}
-			
+
             constructor = targetType.GetDefaultConstructor();
             properties = targetType.GetAllProperties();
             fields = targetType.GetAllFields();
@@ -105,7 +105,7 @@ namespace Microsoft.Xna.Framework.Content
                 var constructor = t.GetDefaultConstructor();
                 if (constructor != null)
                 {
-                    obj = constructor.Invoke(null);                
+                    obj = constructor.Invoke(null);
                 }
             }
             return obj;
@@ -144,7 +144,7 @@ namespace Microsoft.Xna.Framework.Content
 #else
             Attribute attr = Attribute.GetCustomAttribute(member, typeof(ContentSerializerIgnoreAttribute));
 #endif
-            if (attr != null) 
+            if (attr != null)
                 return;
 #if WINRT
             Attribute attr2 = member.GetCustomAttribute(typeof(ContentSerializerAttribute));
@@ -207,7 +207,7 @@ namespace Microsoft.Xna.Framework.Content
                     /* Default */
                     obj2 = input.ReadObject(reader, existingChildObject);
                 }
-				
+
                 if (property != null)
                 {
                     property.SetValue(parent, obj2, null);
@@ -235,7 +235,7 @@ namespace Microsoft.Xna.Framework.Content
                 input.ReadSharedResource(action);
             }
         }
-        
+
         protected internal override object Read(ContentReader input, object existingInstance)
         {
             T obj;
@@ -244,14 +244,15 @@ namespace Microsoft.Xna.Framework.Content
                 obj = (T)existingInstance;
             }
             else
-            {   
+            {
 #if WINRT
                 obj = (constructor == null ? (T)Activator.CreateInstance(typeof(T)) : (T)constructor.Invoke(null));
-#else              
+#else
                 obj = (constructor == null ? (T)Activator.CreateInstance(typeof(T), false) : (T)constructor.Invoke(null));
 #endif
+
             }
-			
+
 			if(baseTypeReader != null)
 				baseTypeReader.Read(input, obj);
 

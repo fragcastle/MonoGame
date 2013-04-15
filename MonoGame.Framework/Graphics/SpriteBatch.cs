@@ -45,6 +45,8 @@ namespace Microsoft.Xna.Framework.Graphics
 
 		public void Begin (SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformMatrix)
 		{
+            if (_beginCalled)
+                throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
 
 			// defaults
 			_sortMode = sortMode;
@@ -226,8 +228,8 @@ namespace Microsoft.Xna.Framework.Graphics
 			      sourceRectangle,
 			      color,
 			      rotation,
-			      new Vector2(origin.X * ((float)destinationRectangle.Width / (float)texture.Width),
-                              origin.Y * ((float)destinationRectangle.Height / (float)texture.Height)),
+			      new Vector2(origin.X * ((float)destinationRectangle.Width / (float)( (sourceRectangle.HasValue && sourceRectangle.Value.Width != 0) ? sourceRectangle.Value.Width : texture.Width)),
+                        			origin.Y * ((float)destinationRectangle.Height) / (float)( (sourceRectangle.HasValue && sourceRectangle.Value.Height != 0) ? sourceRectangle.Value.Height : texture.Height)),
 			      effect,
 			      depth);
 		}

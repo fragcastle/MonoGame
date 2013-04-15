@@ -9,7 +9,7 @@ This license governs use of the accompanying software. If you use the software, 
 accept the license, do not use the software.
 
 1. Definitions
-The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under
 U.S. copyright law.
 
 A "contribution" is the original software, or any additions or changes to the software.
@@ -17,19 +17,19 @@ A "contributor" is any person that distributes its contribution under this licen
 "Licensed patents" are a contributor's patent claims that read directly on its contribution.
 
 2. Grant of Rights
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
 
 3. Conditions and Limitations
 (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, 
+(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software,
 your patent license from such contributor to the software ends automatically.
-(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution
 notices that are present in the software.
-(D) If you distribute any portion of the software in source code form, you may do so only under this license by including 
-a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object 
+(D) If you distribute any portion of the software in source code form, you may do so only under this license by including
+a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object
 code form, you may only do so under a license that complies with this license.
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees
 or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent
@@ -101,7 +101,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
         private Rectangle _scissorRectangle;
         private bool _scissorRectangleDirty;
-  
+
         private VertexBuffer _vertexBuffer;
         private bool _vertexBufferDirty;
 
@@ -163,7 +163,7 @@ namespace Microsoft.Xna.Framework.Graphics
         protected SharpDX.DXGI.SwapChain1 _swapChain;
         protected SwapChainBackgroundPanel _swapChainPanel;
 
-        protected float _dpi; 
+        protected float _dpi;
 
 #endif
 
@@ -222,7 +222,7 @@ namespace Microsoft.Xna.Framework.Graphics
 		const RenderbufferStorage GLDepth24Stencil8 = RenderbufferStorage.Depth24Stencil8;
 		const FramebufferErrorCode GLFramebufferComplete = FramebufferErrorCode.FramebufferComplete;
 #endif
-		
+
 		// TODO Graphics Device events need implementing
 		public event EventHandler<EventArgs> DeviceLost;
 		public event EventHandler<EventArgs> DeviceReset;
@@ -234,9 +234,9 @@ namespace Microsoft.Xna.Framework.Graphics
 
 #if OPENGL
         internal int glFramebuffer;
-        internal int MaxVertexAttributes;        
+        internal int MaxVertexAttributes;
 #endif
-        
+
         internal int MaxTextureSlots;
 
 #if DIRECTX && !WINDOWS_PHONE
@@ -290,8 +290,8 @@ namespace Microsoft.Xna.Framework.Graphics
                 return _isDisposed;
             }
         }
-		
-		public bool IsContentLost { 
+
+		public bool IsContentLost {
 			get {
 				// We will just return IsDisposed for now
 				// as that is the only case I can see for now
@@ -320,13 +320,13 @@ namespace Microsoft.Xna.Framework.Graphics
             GraphicsExtensions.CheckGLError();
 
             GL.GetInteger(All.MaxVertexAttribs, ref MaxVertexAttributes);
-            GraphicsExtensions.CheckGLError();            
+            GraphicsExtensions.CheckGLError();
 #elif OPENGL
             GL.GetInteger(GetPName.MaxTextureImageUnits, out MaxTextureSlots);
             GraphicsExtensions.CheckGLError();
 
             GL.GetInteger(GetPName.MaxVertexAttribs, out MaxVertexAttributes);
-            GraphicsExtensions.CheckGLError();            
+            GraphicsExtensions.CheckGLError();
 #endif
             Textures = new TextureCollection (MaxTextureSlots);
 			SamplerStates = new SamplerStateCollection (MaxTextureSlots);
@@ -345,9 +345,9 @@ namespace Microsoft.Xna.Framework.Graphics
             // Setup extensions.
 #if OPENGL
 #if GLES
-            var extstring = GL.GetString(RenderbufferStorage.Extensions);            			
+            var extstring = GL.GetString(RenderbufferStorage.Extensions);
 #else
-            var extstring = GL.GetString(StringName.Extensions);	
+            var extstring = GL.GetString(StringName.Extensions);
 #endif
             GraphicsExtensions.CheckGLError();
             if (!string.IsNullOrEmpty(extstring))
@@ -378,14 +378,14 @@ namespace Microsoft.Xna.Framework.Graphics
             DrawingSurfaceState.Device = null;
             DrawingSurfaceState.Context = null;
             DrawingSurfaceState.RenderTargetView = null;
-			
+
 #else
 
             CreateDeviceIndependentResources();
             CreateDeviceResources();
             Dpi = DisplayProperties.LogicalDpi;
             CreateSizeDependentResources();
-			
+
 #endif
 
 #elif PSM
@@ -428,13 +428,13 @@ namespace Microsoft.Xna.Framework.Graphics
             ApplyRenderTargets(null);
 
 #if OPENGL
-            // Free all the cached shader programs. 
+            // Free all the cached shader programs.
             _programCache.Clear();
             _shaderProgram = -1;
 #endif
         }
 
-#if DIRECTX 
+#if DIRECTX
 
 #if WINDOWS_PHONE
 
@@ -462,7 +462,7 @@ namespace Microsoft.Xna.Framework.Graphics
             _renderTargetView = renderTargetView;
             _currentRenderTargets[0] = _renderTargetView;
             _currentDepthStencilView = _depthStencilView;
-			
+
             var resource = _renderTargetView.Resource;
             using (var texture2D = new SharpDX.Direct3D11.Texture2D(resource.NativePointer))
             {
@@ -508,8 +508,8 @@ namespace Microsoft.Xna.Framework.Graphics
         {
 #if DEBUG
             var debugLevel = SharpDX.Direct2D1.DebugLevel.Information;
-#else 
-            var debugLevel = SharpDX.Direct2D1.DebugLevel.None; 
+#else
+            var debugLevel = SharpDX.Direct2D1.DebugLevel.None;
 #endif
             // Dispose previous references.
             if (_d2dFactory != null)
@@ -581,8 +581,8 @@ namespace Microsoft.Xna.Framework.Graphics
 
         internal void CreateSizeDependentResources()
         {
-            _d3dContext.OutputMerger.SetTargets((SharpDX.Direct3D11.DepthStencilView)null, 
-                                                (SharpDX.Direct3D11.RenderTargetView)null);  
+            _d3dContext.OutputMerger.SetTargets((SharpDX.Direct3D11.DepthStencilView)null,
+                                                (SharpDX.Direct3D11.RenderTargetView)null);
 
             _d2dContext.Target = null;
             if (_renderTargetView != null)
@@ -634,7 +634,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 {
                     _swapChain.Dispose();
                     _swapChain = null;
-                }                
+                }
             }
 
             var multisampleDesc = new SharpDX.DXGI.SampleDescription(1, 0);
@@ -645,8 +645,8 @@ namespace Microsoft.Xna.Framework.Graphics
             }
 
             // Use BGRA for the swap chain.
-            var format = PresentationParameters.BackBufferFormat == SurfaceFormat.Color ? 
-                            SharpDX.DXGI.Format.B8G8R8A8_UNorm : 
+            var format = PresentationParameters.BackBufferFormat == SurfaceFormat.Color ?
+                            SharpDX.DXGI.Format.B8G8R8A8_UNorm :
                             SharpDXHelper.ToFormat(PresentationParameters.BackBufferFormat);
 
             // If the swap chain already exists... update it.
@@ -655,7 +655,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 _swapChain.ResizeBuffers(   2,
                                             PresentationParameters.BackBufferWidth,
                                             PresentationParameters.BackBufferHeight,
-                                            format, 
+                                            format,
                                             SwapChainFlags.None);
             }
 
@@ -675,7 +675,7 @@ namespace Microsoft.Xna.Framework.Graphics
                     BufferCount = 2,
                     SwapEffect = SharpDXHelper.ToSwapEffect(PresentationParameters),
 
-                    // By default we scale the backbuffer to the window 
+                    // By default we scale the backbuffer to the window
                     // rectangle to function more like a WP7 game.
                     Scaling = SharpDX.DXGI.Scaling.Stretch,
                 };
@@ -683,7 +683,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 // Once the desired swap chain description is configured, it must be created on the same adapter as our D3D Device
 
                 // First, retrieve the underlying DXGI Device from the D3D Device.
-                // Creates the swap chain 
+                // Creates the swap chain
                 using (var dxgiDevice2 = _d3dDevice.QueryInterface<SharpDX.DXGI.Device2>())
                 using (var dxgiAdapter = dxgiDevice2.Adapter)
                 using (var dxgiFactory2 = dxgiAdapter.GetParent<SharpDX.DXGI.Factory2>())
@@ -706,8 +706,8 @@ namespace Microsoft.Xna.Framework.Graphics
                         }
                     }
 
-                    // Ensure that DXGI does not queue more than one frame at a time. This both reduces 
-                    // latency and ensures that the application will only render after each VSync, minimizing 
+                    // Ensure that DXGI does not queue more than one frame at a time. This both reduces
+                    // latency and ensures that the application will only render after each VSync, minimizing
                     // power consumption.
                     dxgiDevice2.MaximumFrameLatency = 1;
                 }
@@ -751,23 +751,23 @@ namespace Microsoft.Xna.Framework.Graphics
 
             // Set the current viewport.
             Viewport = new Viewport
-            { 
-                X = 0, 
+            {
+                X = 0,
                 Y = 0,
-                Width = targetSize.X, 
-                Height = targetSize.Y, 
-                MinDepth = 0.0f, 
-                MaxDepth = 1.0f 
+                Width = targetSize.X,
+                Height = targetSize.Y,
+                MinDepth = 0.0f,
+                MaxDepth = 1.0f
             };
 
-            // Now we set up the Direct2D render target bitmap linked to the swapchain. 
-            // Whenever we render to this bitmap, it will be directly rendered to the 
+            // Now we set up the Direct2D render target bitmap linked to the swapchain.
+            // Whenever we render to this bitmap, it will be directly rendered to the
             // swapchain associated with the window.
             var bitmapProperties = new SharpDX.Direct2D1.BitmapProperties1(
                 new SharpDX.Direct2D1.PixelFormat(format, SharpDX.Direct2D1.AlphaMode.Premultiplied),
                 _dpi, _dpi,
                 SharpDX.Direct2D1.BitmapOptions.Target | SharpDX.Direct2D1.BitmapOptions.CannotDraw);
-            
+
             // Direct2D needs the dxgi version of the backbuffer surface pointer.
             // Get a D2D surface from the DXGI back buffer to use as the D2D render target.
             using (var dxgiBackBuffer = _swapChain.GetBackBuffer<SharpDX.DXGI.Surface>(0))
@@ -776,7 +776,7 @@ namespace Microsoft.Xna.Framework.Graphics
             // So now we can set the Direct2D render target.
             _d2dContext.Target = _bitmapTarget;
 
-            // Set D2D text anti-alias mode to Grayscale to 
+            // Set D2D text anti-alias mode to Grayscale to
             // ensure proper rendering of text on intermediate surfaces.
             _d2dContext.TextAntialiasMode = SharpDX.Direct2D1.TextAntialiasMode.Grayscale;
         }
@@ -803,10 +803,10 @@ namespace Microsoft.Xna.Framework.Graphics
             }
         }
 
-        public BlendState BlendState 
+        public BlendState BlendState
         {
 			get { return _blendState; }
-			set 
+			set
             {
                 // Don't set the same state twice!
                 if (_blendState == value)
@@ -866,7 +866,7 @@ namespace Microsoft.Xna.Framework.Graphics
             lock (_d3dContext)
             {
                 // Clear the diffuse render buffer.
-                if (options.HasFlag(ClearOptions.Target))
+                if ((options & ClearOptions.Target) == ClearOptions.Target)
                 {
                     foreach (var view in _currentRenderTargets)
                     {
@@ -877,9 +877,9 @@ namespace Microsoft.Xna.Framework.Graphics
 
                 // Clear the depth/stencil render buffer.
                 SharpDX.Direct3D11.DepthStencilClearFlags flags = 0;
-                if (options.HasFlag(ClearOptions.DepthBuffer))
+                if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
                     flags |= SharpDX.Direct3D11.DepthStencilClearFlags.Depth;
-                if (options.HasFlag(ClearOptions.Stencil))
+                if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
                     flags |= SharpDX.Direct3D11.DepthStencilClearFlags.Stencil;
 
                 if (flags != 0 && _currentDepthStencilView != null)
@@ -912,20 +912,20 @@ namespace Microsoft.Xna.Framework.Graphics
             ApplyState(false);
 
             ClearBufferMask bufferMask = 0;
-            if (options.HasFlag(ClearOptions.Target))
+            if ((options & ClearOptions.Target) == ClearOptions.Target)
             {
                 GL.ClearColor(color.X, color.Y, color.Z, color.W);
                 GraphicsExtensions.CheckGLError();
                 bufferMask = bufferMask | ClearBufferMask.ColorBufferBit;
             }
-			if (options.HasFlag(ClearOptions.Stencil))
+			if ((options & ClearOptions.Stencil) == ClearOptions.Stencil)
             {
 				GL.ClearStencil(stencil);
                 GraphicsExtensions.CheckGLError();
                 bufferMask = bufferMask | ClearBufferMask.StencilBufferBit;
 			}
 
-			if (options.HasFlag(ClearOptions.DepthBuffer)) 
+			if ((options & ClearOptions.DepthBuffer) == ClearOptions.DepthBuffer)
             {
 #if GLES
                 GL.ClearDepth (depth);
@@ -942,7 +942,7 @@ namespace Microsoft.Xna.Framework.Graphics
 #else
 			GL.Clear(bufferMask);
 #endif
-           		
+
             // Restore the previous render state.
 		    ScissorRectangle = prevScissorRect;
 		    DepthStencilState = prevDepthStencilState;
@@ -960,7 +960,7 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             throw new NotImplementedException();
         }
-		
+
         public void Dispose()
         {
             Dispose(true);
@@ -1089,7 +1089,7 @@ namespace Microsoft.Xna.Framework.Graphics
             // The application may optionally specify "dirty" or "scroll" rects to improve efficiency
             // in certain scenarios.  In this sample, however, we do not utilize those features.
             var parameters = new SharpDX.DXGI.PresentParameters();
-            
+
             try
             {
                 // TODO: Hook in PresentationParameters here!
@@ -1103,8 +1103,8 @@ namespace Microsoft.Xna.Framework.Graphics
             catch (SharpDX.SharpDXException)
             {
                 // TODO: How should we deal with a device lost case here?
-                /*               
-                // If the device was removed either by a disconnect or a driver upgrade, we 
+                /*
+                // If the device was removed either by a disconnect or a driver upgrade, we
                 // must completely reinitialize the renderer.
                 if (    ex.ResultCode == SharpDX.DXGI.DXGIError.DeviceRemoved ||
                         ex.ResultCode == SharpDX.DXGI.DXGIError.DeviceReset)
@@ -1113,7 +1113,7 @@ namespace Microsoft.Xna.Framework.Graphics
                     throw;
                 */
             }
-						
+
 #elif PSM
             _graphics.SwapBuffers();
             _availableVertexBuffers.AddRange(_usedVertexBuffers);
@@ -1211,8 +1211,8 @@ namespace Microsoft.Xna.Framework.Graphics
             {
                 _viewport = value;
 #if DIRECTX
-                var viewport = new SharpDX.Direct3D11.Viewport(_viewport.X, _viewport.Y, (float)_viewport.Width, (float)_viewport.Height, _viewport.MinDepth, _viewport.MaxDepth);
-                lock (_d3dContext) 
+                var viewport = new SharpDX.ViewportF(_viewport.X, _viewport.Y, (float)_viewport.Width, (float)_viewport.Height, _viewport.MinDepth, _viewport.MaxDepth);
+                lock (_d3dContext)
                     _d3dContext.Rasterizer.SetViewports(viewport);
 #elif OPENGL
                 if (IsRenderTargetBound)
@@ -1256,8 +1256,8 @@ namespace Microsoft.Xna.Framework.Graphics
 			else
 				SetRenderTargets(new RenderTargetBinding(renderTarget));
 		}
-		
-		public void SetRenderTargets(params RenderTargetBinding[] renderTargets) 
+
+		public void SetRenderTargets(params RenderTargetBinding[] renderTargets)
 		{
             // If the default swap chain is already set then do nothing.
             if (_currentRenderTargetBindings == null && renderTargets == null)
@@ -1290,7 +1290,7 @@ namespace Microsoft.Xna.Framework.Graphics
             // The render target is really changing now.
             var previousRenderTargetBindings = _currentRenderTargetBindings;
             _currentRenderTargetBindings = renderTargets;
-		
+
             var clearTarget = false;
 
 #if OPENGL
@@ -1309,8 +1309,8 @@ namespace Microsoft.Xna.Framework.Graphics
                 _currentRenderTargets[3] = null;
                 _currentDepthStencilView = _depthStencilView;
 
-                lock (_d3dContext) 
-                    _d3dContext.OutputMerger.SetTargets(_currentDepthStencilView, _currentRenderTargets);                
+                lock (_d3dContext)
+                    _d3dContext.OutputMerger.SetTargets(_currentDepthStencilView, _currentRenderTargets);
 #elif OPENGL
 				GL.BindFramebuffer(GLFramebuffer, this.glFramebuffer);
                 GraphicsExtensions.CheckGLError();
@@ -1319,7 +1319,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 clearTarget = true;
 
                 Viewport = new Viewport(0, 0,
-					PresentationParameters.BackBufferWidth, 
+					PresentationParameters.BackBufferWidth,
 					PresentationParameters.BackBufferHeight);
 			}
 			else
@@ -1387,7 +1387,7 @@ namespace Microsoft.Xna.Framework.Graphics
 					}
 					throw new InvalidOperationException(message);
 				}
-                                
+
 #endif
                 // Set the viewport to the size of the first render target.
                 Viewport = new Viewport(0, 0, renderTarget.Width, renderTarget.Height);
@@ -1434,9 +1434,9 @@ namespace Microsoft.Xna.Framework.Graphics
             {
                 lock (_d3dContext)
                 {
-                    var viewport = new SharpDX.Direct3D11.Viewport( _viewport.X, _viewport.Y, 
-                                                                    _viewport.Width, _viewport.Height, 
-                                                                    _viewport.MinDepth, _viewport.MaxDepth);
+                    var viewport = new SharpDX.ViewportF( _viewport.X, _viewport.Y,
+                                                          _viewport.Width, _viewport.Height,
+                                                          _viewport.MinDepth, _viewport.MaxDepth);
                     _d3dContext.Rasterizer.SetViewports(viewport);
                     _d3dContext.OutputMerger.SetTargets(_currentDepthStencilView, _currentRenderTargets);
                 }
@@ -1451,7 +1451,7 @@ namespace Microsoft.Xna.Framework.Graphics
             _pixelShaderDirty = true;
             _vertexShaderDirty = true;
             _rasterizerStateDirty = true;
-            _scissorRectangleDirty = true;            
+            _scissorRectangleDirty = true;
         }
 #endif
 
@@ -1481,7 +1481,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
             throw new NotImplementedException();
         }
-		
+
 #elif DIRECTX
 
         private static PrimitiveTopology ToPrimitiveTopology(PrimitiveType primitiveType)
@@ -1500,7 +1500,7 @@ namespace Microsoft.Xna.Framework.Graphics
 
             throw new NotImplementedException();
         }
-		
+
 #endif
 
 
@@ -1517,12 +1517,12 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             if (_indexBuffer == indexBuffer)
                 return;
-            
+
             _indexBuffer = indexBuffer;
             _indexBufferDirty = true;
         }
 
-        public IndexBuffer Indices { set { SetIndexBuffer(value); } }
+        public IndexBuffer Indices { set { SetIndexBuffer(value); } get { return _indexBuffer; } }
 
         internal Shader VertexShader
         {
@@ -1563,7 +1563,7 @@ namespace Microsoft.Xna.Framework.Graphics
 #if OPENGL
 
         /// <summary>
-        /// Activates the Current Vertex/Pixel shader pair into a program.         
+        /// Activates the Current Vertex/Pixel shader pair into a program.
         /// </summary>
         private void ActivateShaderProgram()
         {
@@ -1638,9 +1638,9 @@ namespace Microsoft.Xna.Framework.Graphics
 	        {
 #if DIRECTX
 	            _d3dContext.Rasterizer.SetScissorRectangle(
-                    _scissorRectangle.X, 
-                    _scissorRectangle.Y, 
-                    _scissorRectangle.Right, 
+                    _scissorRectangle.X,
+                    _scissorRectangle.Y,
+                    _scissorRectangle.Right,
                     _scissorRectangle.Bottom);
 #elif OPENGL
                 var scissorRect = _scissorRectangle;
@@ -1679,7 +1679,7 @@ namespace Microsoft.Xna.Framework.Graphics
 #if DIRECTX
                     _d3dContext.InputAssembler.SetIndexBuffer(
                         _indexBuffer._buffer,
-                        _indexBuffer.IndexElementSize == IndexElementSize.SixteenBits ? 
+                        _indexBuffer.IndexElementSize == IndexElementSize.SixteenBits ?
                             SharpDX.DXGI.Format.R16_UInt : SharpDX.DXGI.Format.R32_UInt,
                         0);
 #elif OPENGL
@@ -1712,10 +1712,10 @@ namespace Microsoft.Xna.Framework.Graphics
             if (_pixelShader == null)
                 throw new InvalidOperationException("A pixel shader must not set!");
 
-#if DIRECTX 
+#if DIRECTX
 
             if (_vertexShaderDirty)
-                _d3dContext.VertexShader.Set(_vertexShader._vertexShader);                
+                _d3dContext.VertexShader.Set(_vertexShader._vertexShader);
 
             if (_vertexShaderDirty || _vertexBufferDirty)
             {
@@ -1758,7 +1758,7 @@ namespace Microsoft.Xna.Framework.Graphics
             SharpDX.Direct3D11.InputLayout layout;
 
             // Lookup the layout using the shader and declaration as the key.
-            var key = (ulong)decl.HashKey << 32 | (uint)shader.HashKey;           
+            var key = (ulong)decl.HashKey << 32 | (uint)shader.HashKey;
             if (!_inputLayouts.TryGetValue(key, out layout))
             {
                 layout = new SharpDX.Direct3D11.InputLayout(_d3dDevice, shader.Bytecode, decl.GetInputLayout());
@@ -1768,7 +1768,7 @@ namespace Microsoft.Xna.Framework.Graphics
             return layout;
         }
 
-        private int SetUserVertexBuffer<T>(T[] vertexData, int vertexOffset, int vertexCount, VertexDeclaration vertexDecl) 
+        private int SetUserVertexBuffer<T>(T[] vertexData, int vertexOffset, int vertexCount, VertexDeclaration vertexDecl)
             where T : struct, IVertexType
         {
             DynamicVertexBuffer buffer;
@@ -1789,7 +1789,7 @@ namespace Microsoft.Xna.Framework.Graphics
             if ((vertexCount + buffer.UserOffset) < buffer.VertexCount)
             {
                 buffer.UserOffset += vertexCount;
-                buffer.SetData(startVertex * vertexDecl.VertexStride, vertexData, vertexOffset, vertexCount, SetDataOptions.NoOverwrite);
+                buffer.SetData(startVertex * vertexDecl.VertexStride, vertexData, vertexOffset, vertexCount, vertexDecl.VertexStride, SetDataOptions.NoOverwrite);
             }
             else
             {
@@ -1839,13 +1839,26 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 #endif
 
-        public void DrawIndexedPrimitives(PrimitiveType primitiveType, int baseVertex, int minVertexIndex, int numbVertices, int startIndex, int primitiveCount)
+        /// <summary>
+        /// Draw geometry by indexing into the vertex buffer.
+        /// </summary>
+        /// <param name="primitiveType">The type of primitives in the index buffer.</param>
+        /// <param name="baseVertex">Used to offset the vertex range indexed from the vertex buffer.</param>
+        /// <param name="minVertexIndex">A hint of the lowest vertex indexed relative to baseVertex.</param>
+        /// <param name="numVertices">An hint of the maximum vertex indexed.</param>
+        /// <param name="startIndex">The index within the index buffer to start drawing from.</param>
+        /// <param name="primitiveCount">The number of primitives to render from the index buffer.</param>
+        /// <remarks>Note that minVertexIndex and numVertices are unused in MonoGame and will be ignored.</remarks>
+        public void DrawIndexedPrimitives(PrimitiveType primitiveType, int baseVertex, int minVertexIndex, int numVertices, int startIndex, int primitiveCount)
         {
             Debug.Assert(_vertexBuffer != null, "The vertex buffer is null!");
             Debug.Assert(_indexBuffer != null, "The index buffer is null!");
 
-			//if (minVertexIndex > 0)
-			//	throw new NotImplementedException ("minVertexIndex > 0 is supported");            
+            // NOTE: minVertexIndex and numVertices are only hints of the
+            // range of vertex data which will be indexed.
+            //
+            // They will only be used if the graphics API can use
+            // this range hint to optimize rendering.
 
 #if DIRECTX
 
@@ -1858,7 +1871,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 var vertexCount = GetElementCountArray(primitiveType, primitiveCount);
                 _d3dContext.DrawIndexed(vertexCount, startIndex, baseVertex);
             }
-			
+
 #elif OPENGL
 
             ApplyState(true);
@@ -1891,7 +1904,7 @@ namespace Microsoft.Xna.Framework.Graphics
         }
 
         public void DrawUserPrimitives<T>(PrimitiveType primitiveType, T[] vertexData, int vertexOffset, int primitiveCount, VertexDeclaration vertexDeclaration) where T : struct, IVertexType
-        {            
+        {
             Debug.Assert(vertexData != null && vertexData.Length > 0, "The vertexData must not be null or zero length!");
 
             var vertexCount = GetElementCountArray(primitiveType, primitiveCount);
@@ -2008,9 +2021,11 @@ namespace Microsoft.Xna.Framework.Graphics
             var vbHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
             var ibHandle = GCHandle.Alloc(indexData, GCHandleType.Pinned);
 
+            var vertexAddr = (IntPtr)(vbHandle.AddrOfPinnedObject().ToInt64() + vertexDeclaration.VertexStride * vertexOffset);
+
             // Setup the vertex declaration to point at the VB data.
             vertexDeclaration.GraphicsDevice = this;
-            vertexDeclaration.Apply(_vertexShader, vbHandle.AddrOfPinnedObject());
+            vertexDeclaration.Apply(_vertexShader, vertexAddr);
 
             //Draw
             GL.DrawElements(    PrimitiveTypeGL(primitiveType),
@@ -2064,9 +2079,11 @@ namespace Microsoft.Xna.Framework.Graphics
             var vbHandle = GCHandle.Alloc(vertexData, GCHandleType.Pinned);
             var ibHandle = GCHandle.Alloc(indexData, GCHandleType.Pinned);
 
+            var vertexAddr = (IntPtr)(vbHandle.AddrOfPinnedObject().ToInt64() + vertexDeclaration.VertexStride * vertexOffset);
+
             // Setup the vertex declaration to point at the VB data.
             vertexDeclaration.GraphicsDevice = this;
-            vertexDeclaration.Apply(_vertexShader, vbHandle.AddrOfPinnedObject());
+            vertexDeclaration.Apply(_vertexShader, vertexAddr);
 
             //Draw
             GL.DrawElements(    PrimitiveTypeGL(primitiveType),
@@ -2087,12 +2104,12 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             int bestMatchIndex = -1;
             PssVertexBuffer bestMatch = null;
-            
+
             //Search for a good one
             for (int i = _availableVertexBuffers.Count - 1; i >= 0; i--)
             {
                 var buf = _availableVertexBuffers[i];
-                
+
 #region Check there is enough space
                 if (buf.VertexCount < requiredVertexLength)
                     continue;
@@ -2101,7 +2118,7 @@ namespace Microsoft.Xna.Framework.Graphics
                 if (requiredIndexLength > 0 && buf.IndexCount < requiredIndexLength)
                     continue;
 #endregion
-                
+
 #region Check VertexFormat is the same
                 var bufFormats = buf.Formats;
                 if (vertexFormat.Length != bufFormats.Length)
@@ -2118,9 +2135,9 @@ namespace Microsoft.Xna.Framework.Graphics
                 if (!allEqual)
                     continue;
 #endregion
-                
+
                 //this one is acceptable
-                
+
                 //No current best or this one is smaller than the current best
                 if (bestMatch == null || (buf.IndexCount + buf.VertexCount) < (bestMatch.IndexCount + bestMatch.VertexCount))
                 {
@@ -2128,7 +2145,7 @@ namespace Microsoft.Xna.Framework.Graphics
                     bestMatchIndex = i;
                 }
             }
-            
+
             if (bestMatch != null)
             {
                 _availableVertexBuffers.RemoveAt(bestMatchIndex);
@@ -2139,10 +2156,10 @@ namespace Microsoft.Xna.Framework.Graphics
                 bestMatch = new PssVertexBuffer(requiredVertexLength, requiredIndexLength, vertexFormat);
             }
             _usedVertexBuffers.Add(bestMatch);
-            
+
             return bestMatch;
         }
-        
+
         /// <summary>
         /// Set the current _graphics VertexBuffer based on _vertexBuffer and _indexBuffer, reusing an existing VertexBuffer if possible
         /// </summary>
@@ -2150,11 +2167,11 @@ namespace Microsoft.Xna.Framework.Graphics
         {
             int requiredVertexLength = _vertexBuffer.VertexCount;
             int requiredIndexLength = (!bindIndexBuffer || _indexBuffer == null) ? 0 : _indexBuffer.IndexCount;
-            
+
             var vertexFormat = _vertexBuffer.VertexDeclaration.GetVertexFormat();
-            
+
             var vertexBuffer = GetVertexBuffer(vertexFormat, requiredVertexLength, requiredIndexLength);
-            
+
             vertexBuffer.SetVertices(_vertexBuffer._vertexArray);
             if (requiredIndexLength > 0)
                 vertexBuffer.SetIndices(_indexBuffer._buffer);
@@ -2179,6 +2196,6 @@ namespace Microsoft.Xna.Framework.Graphics
 
             throw new NotSupportedException();
         }
-		
+
     }
 }
