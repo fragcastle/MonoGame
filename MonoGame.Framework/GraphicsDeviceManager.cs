@@ -9,7 +9,7 @@ This license governs use of the accompanying software. If you use the software, 
 accept the license, do not use the software.
 
 1. Definitions
-The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under 
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the same meaning here as under
 U.S. copyright law.
 
 A "contribution" is the original software, or any additions or changes to the software.
@@ -17,19 +17,19 @@ A "contributor" is any person that distributes its contribution under this licen
 "Licensed patents" are a contributor's patent claims that read directly on its contribution.
 
 2. Grant of Rights
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, 
+(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3,
 each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
 
 3. Conditions and Limitations
 (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, 
+(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software,
 your patent license from such contributor to the software ends automatically.
-(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution 
+(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution
 notices that are present in the software.
-(D) If you distribute any portion of the software in source code form, you may do so only under this license by including 
-a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object 
+(D) If you distribute any portion of the software in source code form, you may do so only under this license by including
+a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object
 code form, you may only do so under a license that complies with this license.
 (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees
 or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent
@@ -71,6 +71,8 @@ namespace Microsoft.Xna.Framework
         private bool _synchronizedWithVerticalRetrace = true;
         bool disposed;
 
+        private IGraphicsDeviceService _graphicsDeviceService;
+
 #if !(WINDOWS || LINUX || WINRT)
         private bool _wantFullScreen = false;
 #endif
@@ -101,16 +103,22 @@ namespace Microsoft.Xna.Framework
             _preferredDepthStencilFormat = DepthFormat.Depth24;
             _synchronizedWithVerticalRetrace = true;
 
-            if (_game.Services.GetService(typeof(IGraphicsDeviceManager)) != null)
-                throw new ArgumentException("Graphics Device Manager Already Present");
-
             _game.Services.AddService(typeof(IGraphicsDeviceManager), this);
-            _game.Services.AddService(typeof(IGraphicsDeviceService), this);
+
+            if( _game.Services.GetService( typeof( IGraphicsDeviceService ) ) == null )
+            {
+                _game.Services.AddService( typeof( IGraphicsDeviceService ), this );
+                _graphicsDeviceService = this;
 
 #if (WINDOWS && !DIRECTX) || LINUX
-            // TODO: This should not occur here... it occurs during Game.Initialize().
-            CreateDevice();
+                // TODO: This should not occur here... it occurs during Game.Initialize().
+                CreateDevice();
 #endif
+            } else
+            {
+                _graphicsDeviceService = _game.Services.GetService( typeof( IGraphicsDeviceService ) ) as IGraphicsDeviceService;
+                _graphicsDevice = _graphicsDeviceService.GraphicsDevice;
+            }
         }
 
         ~GraphicsDeviceManager()
@@ -120,11 +128,16 @@ namespace Microsoft.Xna.Framework
 
         public void CreateDevice()
         {
-            _graphicsDevice = new GraphicsDevice();
+            _graphicsDevice = _graphicsDevice ?? (_graphicsDeviceService == null ? null : _graphicsDeviceService.GraphicsDevice);
+
+            if( _graphicsDevice == null )
+            {
+                _graphicsDevice = new GraphicsDevice();
+            }
 
             Initialize();
 
-            OnDeviceCreated(EventArgs.Empty);
+            OnDeviceCreated( EventArgs.Empty );
         }
 
         public bool BeginDraw()
@@ -226,9 +239,9 @@ namespace Microsoft.Xna.Framework
             _graphicsDevice.PresentationParameters.BackBufferHeight = _preferredBackBufferHeight;
             _graphicsDevice.PresentationParameters.DepthStencilFormat = _preferredDepthStencilFormat;
             _graphicsDevice.PresentationParameters.IsFullScreen = false;
-            
+
             // TODO: We probably should be resetting the whole device
-            // if this changes as we are targeting a different 
+            // if this changes as we are targeting a different
             // hardware feature level.
             _graphicsDevice.GraphicsProfile = GraphicsProfile;
 
@@ -257,7 +270,7 @@ namespace Microsoft.Xna.Framework
             _graphicsDevice.PresentationParameters.DepthStencilFormat = _preferredDepthStencilFormat;
             _graphicsDevice.PresentationParameters.IsFullScreen = false;
 
-            // TODO: We probably should be resetting the whole 
+            // TODO: We probably should be resetting the whole
             // device if this changes as we are targeting a different
             // hardware feature level.
             _graphicsDevice.GraphicsProfile = GraphicsProfile;
@@ -300,8 +313,8 @@ namespace Microsoft.Xna.Framework
 
             // Set the new display size on the touch panel.
             //
-            // TODO: In XNA this seems to be done as part of the 
-            // GraphicsDevice.DeviceReset event... we need to get 
+            // TODO: In XNA this seems to be done as part of the
+            // GraphicsDevice.DeviceReset event... we need to get
             // those working.
             //
             TouchPanel.DisplayWidth = _graphicsDevice.PresentationParameters.BackBufferWidth;
@@ -364,8 +377,8 @@ namespace Microsoft.Xna.Framework
 
             // Set the new display size on the touch panel.
             //
-            // TODO: In XNA this seems to be done as part of the 
-            // GraphicsDevice.DeviceReset event... we need to get 
+            // TODO: In XNA this seems to be done as part of the
+            // GraphicsDevice.DeviceReset event... we need to get
             // those working.
             //
             TouchPanel.DisplayWidth = _graphicsDevice.PresentationParameters.BackBufferWidth;
@@ -550,7 +563,7 @@ namespace Microsoft.Xna.Framework
 #if ANDROID
             float preferredAspectRatio = (float)PreferredBackBufferWidth /
                                          (float)PreferredBackBufferHeight;
-            float displayAspectRatio = (float)GraphicsDevice.DisplayMode.Width / 
+            float displayAspectRatio = (float)GraphicsDevice.DisplayMode.Width /
                                        (float)GraphicsDevice.DisplayMode.Height;
 
             float adjustedAspectRatio = preferredAspectRatio;

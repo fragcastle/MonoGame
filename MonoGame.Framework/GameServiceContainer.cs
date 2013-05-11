@@ -30,10 +30,11 @@ using System;
 using System.Reflection;
 #endif
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 
 namespace Microsoft.Xna.Framework
 {
-    public class GameServiceContainer : IServiceProvider
+    public class GameServiceContainer : IServiceProvider, IServiceContainer
     {
         Dictionary<Type, object> services;
 
@@ -44,25 +45,40 @@ namespace Microsoft.Xna.Framework
 
         public void AddService(Type type, object provider)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            if (provider == null)
-                throw new ArgumentNullException("provider");
+            AddService(type, provider, false);
+        }
+
+        public void AddService( Type type, object provider, bool promote )
+        {
+            if( type == null )
+                throw new ArgumentNullException( "type" );
+            if( provider == null )
+                throw new ArgumentNullException( "provider" );
 #if WINRT
             if (!type.GetTypeInfo().IsAssignableFrom(provider.GetType().GetTypeInfo()))
 #else
-            if (!type.IsAssignableFrom(provider.GetType()))
+            if( !type.IsAssignableFrom( provider.GetType() ) )
 #endif
-                throw new ArgumentException("The provider does not match the specified service type!");
+                throw new ArgumentException( "The provider does not match the specified service type!" );
 
-            services.Add(type, provider);
+            services.Add( type, provider );
+        }
+
+        public void AddService(Type serviceType, ServiceCreatorCallback callback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddService(Type serviceType, ServiceCreatorCallback callback, bool promote)
+        {
+            throw new NotImplementedException();
         }
 
         public object GetService(Type type)
         {
             if (type == null)
                 throw new ArgumentNullException("type");
-						
+
             object service;
             if (services.TryGetValue(type, out service))
                 return service;
@@ -72,10 +88,15 @@ namespace Microsoft.Xna.Framework
 
         public void RemoveService(Type type)
         {
-            if (type == null)
-                throw new ArgumentNullException("type");
+            RemoveService(type, false);
+        }
 
-            services.Remove(type);
+        public void RemoveService(Type type, bool promote)
+        {
+            if( type == null )
+                throw new ArgumentNullException( "type" );
+
+            services.Remove( type );
         }
     }
 }
